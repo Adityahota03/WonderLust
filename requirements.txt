@@ -5,3 +5,5 @@ bcrypt==5.0.0
 PyJWT==2.14.0
 python-dotenv==1.2.3
 psycopg2-binary
+gunicorn==22.0.0
+

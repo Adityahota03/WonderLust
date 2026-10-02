@@ -64,3 +64,19 @@ def create_app(config_class=Config):
         return jsonify({'status': 'ok', 'app': 'Travel Booking Platform API'}), 200
 
     return app
+
+
+_cached_app = None
+
+
+def __getattr__(name):
+    """
+    Support WSGI servers running 'gunicorn app:app' by lazily creating
+    the Flask application instance when 'app' attribute is accessed on the package.
+    """
+    global _cached_app
+    if name == 'app':
+        if _cached_app is None:
+            _cached_app = create_app()
+        return _cached_app
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
