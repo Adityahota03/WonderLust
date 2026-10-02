@@ -4,6 +4,10 @@
   "installCommand": "npm --prefix frontend install --no-audit --no-fund",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

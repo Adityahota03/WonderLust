@@ -1,21 +1,31 @@
 import os
+import tempfile
 from datetime import timedelta
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, '..'))
+
+# Load environment variables from backend/.env or root .env
+for env_path in [os.path.join(BASE_DIR, '.env'), os.path.join(ROOT_DIR, '.env')]:
+    if os.path.exists(env_path):
+        load_dotenv(env_path)
+load_dotenv()
 
 
 def _get_database_url():
     """
     Return the database URL, converting Neon/standard 'postgresql://' URLs
     to the 'postgresql+psycopg2://' dialect that SQLAlchemy requires.
+    Falls back to a writable temp directory in serverless environments if not configured.
     """
-    url = os.getenv(
-        "DATABASE_URL",
-        f"sqlite:///{os.path.join(BASE_DIR, 'travel.db')}"
-    )
+    is_serverless = bool(os.getenv('VERCEL') or os.getenv('AWS_LAMBDA_FUNCTION_NAME'))
+    if is_serverless:
+        default_sqlite = f"sqlite:///{os.path.join(tempfile.gettempdir(), 'travel.db')}"
+    else:
+        default_sqlite = f"sqlite:///{os.path.join(BASE_DIR, 'travel.db')}"
+
+    url = os.getenv("DATABASE_URL", default_sqlite)
     # Neon and many PaaS providers emit 'postgresql://' — SQLAlchemy needs the driver prefix
     if url.startswith("postgresql://"):
         url = url.replace("postgresql://", "postgresql+psycopg2://", 1)
