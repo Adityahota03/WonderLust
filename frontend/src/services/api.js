@@ -81,4 +81,9 @@ export const contactAPI = {
   submit: (data) => api.post('/contact', data),
 };
 
+export const chatbotAPI = {
+  sendMessage: (messages) => api.post('/chat', { messages }),
+  getSuggestions: () => api.get('/chat/suggestions'),
+};
+
 export default api;

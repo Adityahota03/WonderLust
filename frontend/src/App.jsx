@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import Chatbot from './components/chat/Chatbot';
 
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
@@ -63,6 +64,7 @@ function App() {
           <Navbar />
           <AnimatedRoutes />
           <Footer />
+          <Chatbot />
         </div>
       </AuthProvider>
     </Router>

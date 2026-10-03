@@ -21,6 +21,7 @@ def create_app(config_class=Config):
     from .routes.payments import payments_bp
     from .routes.contact import contact_bp
     from .routes.admin import admin_bp
+    from .routes.chatbot import chatbot_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(destinations_bp)
@@ -32,6 +33,7 @@ def create_app(config_class=Config):
     app.register_blueprint(payments_bp)
     app.register_blueprint(contact_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(chatbot_bp)
 
     @app.route('/api/health', methods=['GET'])
     def health():
